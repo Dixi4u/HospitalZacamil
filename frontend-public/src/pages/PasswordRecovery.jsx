@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import './PasswordRecovery.css'; // Archivo CSS para estilos
 
 function PasswordRecovery() {
     const [email, setEmail] = useState('');
@@ -9,12 +10,16 @@ function PasswordRecovery() {
 
     const handleRequestCode = async () => {
         try {
+            if (!email) {
+                throw new Error("El campo de correo electrónico está vacío");
+            }
+
             const response = await fetch('http://localhost:4000/api/passwordRecovery/requestCode', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                credentials: 'include', // Incluir cookies en la solicitud
+                credentials: 'include',
                 body: JSON.stringify({ email }),
             });
 
@@ -24,7 +29,7 @@ function PasswordRecovery() {
             }
 
             setMessage('Código enviado a tu correo');
-            setStep(2); // Avanzar al siguiente paso
+            setStep(2);
         } catch (error) {
             setMessage(error.message);
         }
@@ -32,12 +37,16 @@ function PasswordRecovery() {
 
     const handleVerifyCode = async () => {
         try {
+            if (!code) {
+                throw new Error("El campo de código está vacío");
+            }
+
             const response = await fetch('http://localhost:4000/api/passwordRecovery/verifyCode', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                credentials: 'include', // Incluir cookies en la solicitud
+                credentials: 'include',
                 body: JSON.stringify({ code }),
             });
 
@@ -55,22 +64,26 @@ function PasswordRecovery() {
 
     const handleNewPassword = async () => {
         try {
+            if (!newPassword) {
+                throw new Error("El campo de nueva contraseña está vacío");
+            }
+
             const response = await fetch('http://localhost:4000/api/passwordRecovery/newPassword', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                credentials: 'include', // Incluir cookies en la solicitud
-                body: JSON.stringify({ password: newPassword }),
+                credentials: 'include',
+                body: JSON.stringify({ newPassword, code }),
             });
 
             if (!response.ok) {
                 const errorData = await response.json();
-                throw new Error(errorData.message || 'Error al cambiar la contraseña');
+                throw new Error(errorData.message || 'Error al actualizar la contraseña');
             }
 
-            setMessage('Contraseña actualizada exitosamente');
-            setStep(1); // Reiniciar el flujo
+            setMessage('Contraseña actualizada con éxito');
+            setStep(1); // Opcional: Regresar al paso inicial o redirigir al login
         } catch (error) {
             setMessage(error.message);
         }
@@ -78,8 +91,8 @@ function PasswordRecovery() {
 
     return (
         <div className="password-recovery-container">
-            <h1>Recuperación de Contraseña</h1>
-            <p>{message}</p>
+            <h1 className="password-recovery-title">Recuperación de Contraseña</h1>
+            <p className="password-recovery-message">{message}</p>
             {step === 1 && (
                 <>
                     <input
@@ -87,8 +100,11 @@ function PasswordRecovery() {
                         placeholder="Correo electrónico"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
+                        className="password-recovery-input"
                     />
-                    <button onClick={handleRequestCode}>Solicitar Código</button>
+                    <button onClick={handleRequestCode} className="password-recovery-button">
+                        Solicitar Código
+                    </button>
                 </>
             )}
             {step === 2 && (
@@ -98,8 +114,11 @@ function PasswordRecovery() {
                         placeholder="Código de verificación"
                         value={code}
                         onChange={(e) => setCode(e.target.value)}
+                        className="password-recovery-input"
                     />
-                    <button onClick={handleVerifyCode}>Verificar Código</button>
+                    <button onClick={handleVerifyCode} className="password-recovery-button">
+                        Verificar Código
+                    </button>
                 </>
             )}
             {step === 3 && (
@@ -109,8 +128,11 @@ function PasswordRecovery() {
                         placeholder="Nueva contraseña"
                         value={newPassword}
                         onChange={(e) => setNewPassword(e.target.value)}
+                        className="password-recovery-input"
                     />
-                    <button onClick={handleNewPassword}>Actualizar Contraseña</button>
+                    <button onClick={handleNewPassword} className="password-recovery-button">
+                        Actualizar Contraseña
+                    </button>
                 </>
             )}
         </div>

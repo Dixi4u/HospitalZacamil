@@ -25,8 +25,8 @@ authCtrl.login = async (req, res) => {
 
         const token = jsonwebtoken.sign(
             { id: user._id, email: user.email },
-            config.jwt.JWT_SECRET,
-            { expiresIn: config.jwt.expiresIn }
+            config.JWT.secret,
+            { expiresIn: config.JWT.expiresIn }
         );
 
         res.status(200).json({ message: 'Inicio de sesión exitoso', token });

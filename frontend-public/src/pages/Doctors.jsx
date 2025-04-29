@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
+import React, { useState, useEffect } from "react";
+import "./Doctors.css"; // Archivo CSS para estilos
 
-function Doctores() {
+const Doctors = () => {
     const [doctores, setDoctores] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -8,23 +9,17 @@ function Doctores() {
     useEffect(() => {
         const fetchDoctores = async () => {
             try {
-                const response = await fetch('http://localhost:4000/api/doctor', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${localStorage.getItem('token')}`, // Enviar el token
-                    },
-                });
-
+                console.log("Llamando a la API...");
+                const response = await fetch("http://localhost:4000/api/doctor");
                 if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.message || 'Error al obtener los doctores');
+                    throw new Error("Error al obtener los datos");
                 }
-
                 const data = await response.json();
+                console.log("Datos obtenidos de la API:", data);
                 setDoctores(data);
-            } catch (error) {
-                setError(error.message);
+            } catch (err) {
+                console.error("Error:", err.message);
+                setError(err.message);
             } finally {
                 setLoading(false);
             }
@@ -33,21 +28,23 @@ function Doctores() {
         fetchDoctores();
     }, []);
 
-    if (loading) return <p>Cargando doctores...</p>;
-    if (error) return <p>Error: {error}</p>;
+    if (loading) return <p className="loading">Cargando doctores...</p>;
+    if (error) return <p className="error">Error: {error}</p>;
 
     return (
         <div className="doctores-container">
-            <h1>Lista de Doctores</h1>
-            <ul>
+            <h1 className="title">Lista de Doctores</h1>
+            <div className="doctores-grid">
                 {doctores.map((doctor) => (
-                    <li key={doctor._id}>
-                        <strong>{doctor.nombre}</strong> - {doctor.especialidad}
-                    </li>
+                    <div className="doctor-card" key={doctor._id}>
+                        <h2 className="doctor-name">{doctor.name}</h2>
+                        <p className="doctor-speciality">{doctor.speciality}</p>
+                        <p className="doctor-email">{doctor.email}</p>
+                    </div>
                 ))}
-            </ul>
+            </div>
         </div>
     );
-}
+};
 
-export default Doctores;
+export default Doctors;

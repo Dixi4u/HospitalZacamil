@@ -1,0 +1,74 @@
+/* Estilos generales */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Contenedor principal */
+.login-container {
+    background-color: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+/* Título */
+.login-title {
+    font-size: 2rem;
+    color: #4a90e2;
+    margin-bottom: 20px;
+}
+
+/* Inputs */
+.login-input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+.login-input:focus {
+    border-color: #4a90e2;
+    outline: none;
+}
+
+/* Botón */
+.login-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.login-button:hover {
+    background-color: #357abd;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    .login-container {
+        padding: 20px;
+    }
+
+    .login-title {
+        font-size: 1.5rem;
+    }
+}

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './Login.css'; // Archivo CSS para estilos
 
 function Login() {
     const [email, setEmail] = useState('');
@@ -33,23 +34,23 @@ function Login() {
 
     return (
         <div className="login-container">
-            <h1>Iniciar Sesión</h1>
-            <form onSubmit={handleSubmit}>
+            <form className="login-form" onSubmit={handleSubmit}>
+                <h1 className="login-title">Iniciar Sesión</h1>
                 <input
                     type="email"
                     placeholder="Correo electrónico"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    required
+                    className="login-input"
                 />
                 <input
                     type="password"
                     placeholder="Contraseña"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    required
+                    className="login-input"
                 />
-                <button type="submit">Iniciar Sesión</button>
+                <button type="submit" className="login-button">Ingresar</button>
             </form>
         </div>
     );
